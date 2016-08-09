@@ -82,6 +82,10 @@ it('tree millyon sefen hunderd ant twinty sex', () => {
   expect(wtn('tree millyon sefen hunderd and twinty sex', {fuzzy: true})).to.equal(3000726);
 });
 
+it('forty two point five', () => {
+  expect(wtn('forty two point five')).to.equal(42.5);
+});
+
 it('ten point five', () => {
   expect(wtn('ten point five')).to.equal(10.5);
 });
