@@ -64,7 +64,7 @@ const COUNT = {
 
 const MAGNITUDE = {
   hundred: 100,
-  hundreth: 100,
+  hundredth: 100,
   thousand: 1000,
   million: 1000000,
   billion: 1000000000,
