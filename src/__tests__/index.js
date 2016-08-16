@@ -93,3 +93,65 @@ it('ten point five', () => {
 it('three point one four one five nine two six', () => {
   expect(wtn('three point one four one five nine two six')).to.equal(3.1415926);
 });
+
+/* testing for ordinal numbers */
+
+it('first', () => {
+  expect(wtn('first')).to.equal(1);
+});
+
+it('second', () => {
+  expect(wtn('second')).to.equal(2);
+});
+
+it('third', () => {
+  expect(wtn('third')).to.equal(3);
+});
+
+it('fourteenth', () => {
+  expect(wtn('fourteenth')).to.equal(14);
+});
+
+it('twenty fifth', () => {
+  expect(wtn('twenty fifth')).to.equal(25);
+});
+
+it('thirty fourth', () => {
+  expect(wtn('thirty fourth')).to.equal(34);
+});
+
+it('forty seventh', () => {
+  expect(wtn('forty seventh')).to.equal(47);
+});
+
+it('fifty third', () => {
+  expect(wtn('fifty third')).to.equal(53);
+});
+
+it('sixtieth', () => {
+  expect(wtn('sixtieth')).to.equal(60);
+});
+
+it('seventy second', () => {
+  expect(wtn('seventy second')).to.equal(72);
+});
+
+it('eighty ninth', () => {
+  expect(wtn('eighty ninth')).to.equal(89);
+});
+
+it('ninety sixth', () => {
+  expect(wtn('ninety sixth')).to.equal(96);
+});
+
+it('one hundred and eighth', () => {
+  expect(wtn('one hundred and eighth')).to.equal(108);
+});
+
+it('one hundred and tenth', () => {
+  expect(wtn('one hundred and tenth')).to.equal(110);
+});
+
+it('one hundred and ninety ninth', () => {
+  expect(wtn('one hundred and ninety ninth')).to.equal(199);
+});
