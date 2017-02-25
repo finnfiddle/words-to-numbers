@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import wtn from '../';
 const { it } = global;
 
-
 it('one hundred', () => {
   expect(wtn('one hundred')).to.equal(100);
 });
@@ -68,6 +67,14 @@ it('there were twenty-thousand, five-hundred and sixty-nine X in the five quinti
   expect(wtn('there were twenty-thousand, five-hundred and sixty-nine X in the five quintillion Y'))
   .to
   .equal('there were 20569 X in the 5000000000000000000 Y');
+});
+
+it('one two three', () => {
+  expect(wtn('one two three')).to.equal('1 2 3');
+});
+
+it('test one two three test', () => {
+  expect(wtn('test one two three test')).to.equal('test 1 2 3 test');
 });
 
 it('won huntred', () => {

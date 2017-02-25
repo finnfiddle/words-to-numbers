@@ -1,7 +1,7 @@
 {
   "name": "words-to-numbers",
   "description": "convert textual words to numbers with optional fuzzy text matching",
-  "version": "1.1.2",
+  "version": "1.2.1",
   "license": "MIT",
   "options": {
     "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js"

@@ -58,6 +58,27 @@ wordsToNumbers('ten point five'); //10.5
 wordsToNumbers('three point one four one five nine two six'); //3.1415926
 ```
 
+## Ordinal Numbers
+
+```javascript
+import wordsToNumbers from 'words-to-numbers';
+wordsToNumbers('first'); //1
+wordsToNumbers('second'); //2
+wordsToNumbers('third'); //3
+wordsToNumbers('fourteenth'); //14
+wordsToNumbers('twenty fifth'); //25
+wordsToNumbers('thirty fourth'); //34
+wordsToNumbers('forty seventh'); //47
+wordsToNumbers('fifty third'); //53
+wordsToNumbers('sixtieth'); //60
+wordsToNumbers('seventy second'); //72
+wordsToNumbers('eighty ninth'); //89
+wordsToNumbers('ninety sixth'); //96
+wordsToNumbers('one hundred and eighth'); //108
+wordsToNumbers('one hundred and tenth'); //110
+wordsToNumbers('one hundred and ninety ninth'); //199
+```
+
 ## Commonjs
 
 ```javascript

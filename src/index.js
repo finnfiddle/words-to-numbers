@@ -3,7 +3,7 @@
 import itsSet from 'its-set';
 import clj_fuzzy from 'clj-fuzzy';
 
-const COUNT = {
+const PRIMARY_COUNT = {
   zero: 0,
   a: 1,
   one: 1,
@@ -44,6 +44,9 @@ const COUNT = {
   eighteenth: 18,
   nineteen: 19,
   nineteenth: 19,
+};
+
+const SECONDARY_COUNT = {
   twenty: 20,
   twentieth: 20,
   thirty: 30,
@@ -61,6 +64,8 @@ const COUNT = {
   ninety: 90,
   ninetieth: 90,
 };
+
+const COUNT = Object.assign({}, PRIMARY_COUNT, SECONDARY_COUNT);
 
 const MAGNITUDE = {
   hundred: 100,
@@ -85,11 +90,34 @@ const NUMBER_WORDS = Object.keys(COUNT)
 const clean = word => word.replace(',', '');
 
 const extractNumberRegions = words => {
-  const reduced = words
-    .map(word => NUMBER_WORDS.indexOf(clean(word)) > -1)
+  const numWords = words.length;
+
+  const numberWords = words
+    .map(word => NUMBER_WORDS.includes(clean(word)));
+
+  let pointReached = false;
+
+  const reduced = numberWords
     .reduce((acc, isNumberWord, i) => {
       if (isNumberWord) {
-        if (!itsSet(acc.start)) acc.start = i;
+        if (words[i] === 'point') pointReached = true;
+
+        if (!itsSet(acc.start)) {
+          acc.start = i;
+        }
+        else if (
+          Object.keys(PRIMARY_COUNT).includes(words[i - 1]) &&
+          Object.keys(PRIMARY_COUNT).includes(words[i]) &&
+          !pointReached
+        ) {
+          acc.regions.push({start: acc.start, end: i - 1});
+          if (i === numWords - 1) {
+            acc.regions.push({start: i, end: i});
+          }
+          else {
+            acc.start = i;
+          }
+        }
       }
       else if (itsSet(acc.start)) {
         acc.regions.push({start: acc.start, end: i - 1});
