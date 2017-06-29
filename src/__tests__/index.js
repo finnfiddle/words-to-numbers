@@ -162,3 +162,12 @@ it('one hundred and tenth', () => {
 it('one hundred and ninety ninth', () => {
   expect(wtn('one hundred and ninety ninth')).to.equal(199);
 });
+
+/* edge cases that should return nulls  */
+it('and', () => {
+  expect(wtn('and')).to.equal(null);
+});
+
+it('a', () => {
+  expect(wtn('a')).to.equal(null);
+});
