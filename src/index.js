@@ -44,6 +44,25 @@ const PRIMARY_COUNT = {
   eighteenth: 18,
   nineteen: 19,
   nineteenth: 19,
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  '7': 7,
+  '8': 8,
+  '9': 9,
+  '10': 10,
+  '11': 11,
+  '12': 12,
+  '13': 13,
+  '14': 14,
+  '15': 15,
+  '16': 16,
+  '17': 17,
+  '18': 18,
+  '19': 19
 };
 
 const SECONDARY_COUNT = {
@@ -63,6 +82,14 @@ const SECONDARY_COUNT = {
   eightieth: 80,
   ninety: 90,
   ninetieth: 90,
+  '20': 20,
+  '30': 30,
+  '40': 40,
+  '50': 50,
+  '60': 60,
+  '70': 70,
+  '80': 80,
+  '90': 90
 };
 
 const COUNT = Object.assign({}, PRIMARY_COUNT, SECONDARY_COUNT);
@@ -85,7 +112,7 @@ const MAGNITUDE = {
 
 const NUMBER_WORDS = Object.keys(COUNT)
   .concat(Object.keys(MAGNITUDE))
-  .concat(['and', 'point']);
+  .concat(['and', 'point', 'dot']);
 
 const clean = word => word.replace(',', '');
 
@@ -100,7 +127,7 @@ const extractNumberRegions = words => {
   const reduced = numberWords
     .reduce((acc, isNumberWord, i) => {
       if (isNumberWord) {
-        if (words[i] === 'point') pointReached = true;
+        if (words[i] === 'point' || words[i] === 'dot') pointReached = true;
 
         if (!itsSet(acc.start)) {
           acc.start = i;
@@ -158,7 +185,9 @@ const convertWordsToNonDecimal = words => {
 };
 
 const convertWordsToNumber = words => {
-  const pointIndex = words.indexOf('point');
+  let pointIndex = words.indexOf('point');
+  if (pointIndex === -1) pointIndex = words.indexOf('dot');
+
   if (pointIndex > -1) {
     const numberWords = words.slice(0, pointIndex);
     const decimalWords = words.slice(pointIndex + 1);
