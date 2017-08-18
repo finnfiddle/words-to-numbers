@@ -162,3 +162,23 @@ it('one hundred and tenth', () => {
 it('one hundred and ninety ninth', () => {
   expect(wtn('one hundred and ninety ninth')).to.equal(199);
 });
+
+it('eleven dot one', () => {
+  expect(wtn('eleven dot one')).to.eq(11.1);
+});
+
+it('11 dot one', () => {
+  expect(wtn('11 dot one')).to.eq(11.1);
+});
+
+it('eleven dot 1', () => {
+  expect(wtn('eleven dot 1')).to.eq(11.1);
+});
+
+it('11 point one', () => {
+  expect(wtn('11 dot one')).to.eq(11.1);
+});
+
+it('eleven point 1', () => {
+  expect(wtn('eleven dot 1')).to.eq(11.1);
+});
