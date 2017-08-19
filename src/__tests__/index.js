@@ -206,3 +206,7 @@ it('a', () => {
 it('junkvalue', () => {
   expect(wtn('junkvalue')).to.equal('junkvalue');
 });
+
+it('eleven dot one', () => {
+  expect(wtn('eleven dot one')).to.eq(11.1);
+});

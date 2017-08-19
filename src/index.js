@@ -87,7 +87,7 @@ const MAGNITUDE = {
 };
 
 // all words found in number phrases
-const NUMBER_WORDS = ['and', 'point']
+const NUMBER_WORDS = ['and', 'point', 'dot']
   .concat(Object.keys(UNIT))
   .concat(Object.keys(TEN))
   .concat(Object.keys(MAGNITUDE));
@@ -96,7 +96,7 @@ const PUNCTUATION = /[.,\/#!$%\^&\*;:{}=\-_`~()]/g;
 
 const grammar = ohm.grammar(`
   WordsToNumbers {
-    Number = Section* "point"? unit*
+    Number = Section* ("point" | "dot")? unit*
     Section = TenAndMagnitude | UnitAndMagnitude | TenUnitAndMagnitude | Unit | Ten | TenAndUnit | Magnitude
     Ten = ten ~unit ~magnitude
     TenAndUnit = ten unit ~magnitude
@@ -176,7 +176,7 @@ const findRegions = (text, fuzzy) => {
     .reduce((regions, word, index) => {
       if (!word.isNumberWord) return regions;
       if (!regions.length) return [word];
-      if (word.text === 'point') {
+      if (word.text === 'point' || word.text === 'dot') {
         const newRegions = regions.slice();
         newRegions[regions.length - 1].pointReached = true;
         newRegions[regions.length - 1].end = word.end;
