@@ -1,52 +1,57 @@
-// inpired by this answer on stackoverflow: http://stackoverflow.com/a/12014376 by http://stackoverflow.com/users/631193/javaandcsharp and thanks to @Greg Hewgill for the original, written in Python.
+/* Node module for converting words to numerals.
+  Convert words to numbers. Optionally fuzzy match the words to numbers.
+  `npm install words-to-numbers`
+  If the whole string passed is a number then it will return a Number type otherwise it will return the original string with all instances of numbers replaced.
+*/
 
 import itsSet from 'its-set';
 import clj_fuzzy from 'clj-fuzzy';
+import ohm from 'ohm-js';
 
-const PRIMARY_COUNT = {
+const UNIT = {
   zero: 0,
-  a: 1,
-  one: 1,
   first: 1,
-  two: 2,
+  one: 1,
   second: 2,
-  three: 3,
+  two: 2,
   third: 3,
-  four: 4,
-  fourth: 4,
-  five: 5,
-  fifth: 5,
-  six: 6,
-  sixth: 6,
-  seven: 7,
-  seventh: 7,
-  eight: 8,
-  eighth: 8,
-  nine: 9,
-  ninth: 9,
-  ten: 10,
-  tenth: 10,
-  eleven: 11,
-  eleventh: 11,
-  twelve: 12,
-  twelfth: 12,
-  thirteen: 13,
   thirteenth: 13,
-  fourteen: 14,
+  thirteen: 13,
+  three: 3,
+  fourth: 4,
   fourteenth: 14,
-  fifteen: 15,
+  fourteen: 14,
+  four: 4,
   fifteenth: 15,
-  sixteen: 16,
+  fifteen: 15,
+  fifth: 5,
+  five: 5,
+  sixth: 6,
   sixteenth: 16,
-  seventeen: 17,
+  sixteen: 16,
+  six: 6,
   seventeenth: 17,
-  eighteen: 18,
+  seventeen: 17,
+  seventh: 7,
+  seven: 7,
   eighteenth: 18,
-  nineteen: 19,
+  eighteen: 18,
+  eighth: 8,
+  eight: 8,
   nineteenth: 19,
+  nineteen: 19,
+  ninth: 9,
+  nine: 9,
+  tenth: 10,
+  ten: 10,
+  eleventh: 11,
+  eleven: 11,
+  twelfth: 12,
+  twelve: 12,
+  a: 1,
 };
 
-const SECONDARY_COUNT = {
+const TEN = {
   twenty: 20,
   twentieth: 20,
   thirty: 30,
@@ -65,8 +70,6 @@ const SECONDARY_COUNT = {
   ninetieth: 90,
 };
 
-const COUNT = Object.assign({}, PRIMARY_COUNT, SECONDARY_COUNT);
-
 const MAGNITUDE = {
   hundred: 100,
   hundredth: 100,
@@ -83,90 +86,58 @@ const MAGNITUDE = {
   decillion: 1000000000000000000000000000000000,
 };
 
-const NUMBER_WORDS = Object.keys(COUNT)
-  .concat(Object.keys(MAGNITUDE))
-  .concat(['and', 'point']);
+// all words found in number phrases
+const NUMBER_WORDS = ['and', 'point']
+  .concat(Object.keys(UNIT))
+  .concat(Object.keys(TEN))
+  .concat(Object.keys(MAGNITUDE));
 
-const clean = word => word.replace(',', '');
+const PUNCTUATION = /[.,\/#!$%\^&\*;:{}=\-_`~()]/g;
 
-const extractNumberRegions = words => {
-  const numWords = words.length;
-
-  const numberWords = words
-    .map(word => NUMBER_WORDS.includes(clean(word)));
-
-  let pointReached = false;
-
-  const reduced = numberWords
-    .reduce((acc, isNumberWord, i) => {
-      if (isNumberWord) {
-        if (words[i] === 'point') pointReached = true;
-
-        if (!itsSet(acc.start)) {
-          acc.start = i;
-        }
-        else if (
-          Object.keys(PRIMARY_COUNT).includes(words[i - 1]) &&
-          Object.keys(PRIMARY_COUNT).includes(words[i]) &&
-          !pointReached
-        ) {
-          acc.regions.push({start: acc.start, end: i - 1});
-          if (i === numWords - 1) {
-            acc.regions.push({start: i, end: i});
-          }
-          else {
-            acc.start = i;
-          }
-        }
-      }
-      else if (itsSet(acc.start)) {
-        acc.regions.push({start: acc.start, end: i - 1});
-        acc.start = null;
-      }
-      return acc;
-    }, {regions: [], start: null});
-  return reduced.start === 0 && !reduced.regions.length ? 'whole' : reduced.regions;
-};
-
-const convertWordsToDecimal = words =>
-  words.map(word => COUNT[word])
-    .join('');
-
-const convertWordsToNonDecimal = words => {
-  const reduced = words.reduce((acc, word) => {
-    const cleanWord = clean(word);
-    if (cleanWord === 'and') return acc;
-    if (itsSet(acc.count)) {
-      if (itsSet(COUNT[cleanWord])) {
-        acc.extra += COUNT[acc.count];
-        acc.count = cleanWord;
-      }
-      else {
-        acc.pairs.push({count: acc.count, magnitude: cleanWord});
-        acc.count = null;
-      }
-    }
-    else {
-      acc.count = cleanWord;
-    }
-    return acc;
-  }, {pairs: [], count: null, extra: 0});
-
-  return reduced.pairs.reduce((acc, pair) =>
-    acc + COUNT[pair.count] * MAGNITUDE[pair.magnitude]
-  , COUNT[reduced.count] || 0) + reduced.extra;
-};
-
-const convertWordsToNumber = words => {
-  const pointIndex = words.indexOf('point');
-  if (pointIndex > -1) {
-    const numberWords = words.slice(0, pointIndex);
-    const decimalWords = words.slice(pointIndex + 1);
-    return parseFloat(`${convertWordsToNonDecimal(numberWords)}.${convertWordsToDecimal(decimalWords)}`);
+const grammar = ohm.grammar(`
+  WordsToNumbers {
+    Number = Section* "point"? unit*
+    Section = TenAndMagnitude | UnitAndMagnitude | TenUnitAndMagnitude | Unit | Ten | TenAndUnit | Magnitude
+    Ten = ten ~unit ~magnitude
+    TenAndUnit = ten unit ~magnitude
+    TenAndMagnitude = ten ~unit magnitude
+    UnitAndMagnitude = ~ten unit magnitude
+    TenUnitAndMagnitude = ten unit magnitude
+    Unit = ~ten unit ~magnitude
+    Magnitude = ~ten ~unit magnitude
+    ten = ${Object.keys(TEN).map(key => `"${key}" | `).join('').slice(0, -2)}
+    unit = ${Object.keys(UNIT).map(key => `"${key}" | `).join('').slice(0, -2)}
+    magnitude = ${Object.keys(MAGNITUDE).map(key => `"${key}" | `).join('').slice(0, -2)}
   }
-  return convertWordsToNonDecimal(words);
-};
+`);
 
+const semantics = grammar
+  .createSemantics()
+  .addOperation('eval', {
+    Number: (sections, point, decimal) => {
+      const ints = sections.children.reduce((sum, child) => sum + child.eval(), 0);
+      if (point.children.length) {
+        const decimals = decimal.children
+          .reduce((acc, d) => `${acc}${d.eval()}`, '')
+          .replace(/\s/g, '');
+        return parseFloat(`${ints}.${decimals}`);
+      }
+      return ints;
+    },
+    Ten: ten => ten.eval(),
+    Unit: (unit) => unit.eval(),
+    TenAndUnit: (ten, unit) => ten.eval() + unit.eval(),
+    TenAndMagnitude: (ten, magnitude) => ten.eval() * magnitude.eval(),
+    UnitAndMagnitude: (unit, magnitude) => unit.eval() * magnitude.eval(),
+    TenUnitAndMagnitude: (ten, unit, magnitude) =>
+      (ten.eval() + unit.eval()) * magnitude.eval(),
+    Magnitude: magnitude => magnitude.eval(),
+    unit: (value) => UNIT[value.primitiveValue],
+    ten: (value) => TEN[value.primitiveValue],
+    magnitude: (value) => MAGNITUDE[value.primitiveValue],
+  });
+
+// try coerce a word into a NUMBER_WORD using fuzzy matching
 const fuzzyMatch = word => {
   return NUMBER_WORDS
     .map(numberWord => ({
@@ -177,27 +148,108 @@ const fuzzyMatch = word => {
     .word;
 };
 
+const isUnit = word => Object.keys(UNIT).indexOf(word) !== -1;
+const isTen = word => Object.keys(TEN).indexOf(word) !== -1;
+const isMag = word => Object.keys(MAGNITUDE).indexOf(word) !== -1;
+
+const findRegions = (text, fuzzy) => {
+  const words = text
+    .split(/[ -]/g)
+    .map(word => fuzzy ? fuzzyMatch(word) : word)
+    .reduce((acc, word, i) => {
+      const start = acc.length ? acc[i - 1].end + 1 : 0;
+      return acc.concat({
+        text: word,
+        start,
+        end: start + word.length,
+      });
+    }, [])
+    .map(word =>
+      Object.assign({}, word, {
+        isNumberWord: NUMBER_WORDS.indexOf(
+          word.text.replace(PUNCTUATION, '').toLowerCase()
+        ) !== -1,
+      })
+    );
+
+  return words
+    .reduce((regions, word, index) => {
+      if (!word.isNumberWord) return regions;
+      if (!regions.length) return [word];
+      if (word.text === 'point') {
+        const newRegions = regions.slice();
+        newRegions[regions.length - 1].pointReached = true;
+        newRegions[regions.length - 1].end = word.end;
+        newRegions[regions.length - 1].text += ` ${word.text}`;
+        return newRegions;
+      }
+      const prevRegion = regions[regions.length - 1];
+      const prevWord = words[index - 1] || '';
+      if (
+        prevRegion.end === word.start - 1 &&
+        !(isUnit(word.text) && isUnit(prevWord.text) || prevRegion.pointReached) &&
+        !(isTen(word.text) && isTen(prevWord.text)) &&
+        !(isMag(word.text) && isMag(prevWord.text)) &&
+        !(isTen(word.text) && isUnit(prevWord.text)) ||
+        (prevRegion.pointReached && isUnit(word.text)) ||
+        word === 'and' ||
+        prevWord === 'and'
+      ) {
+        const newRegions = regions.slice();
+        newRegions[regions.length - 1].end = word.end;
+        newRegions[regions.length - 1].text += ` ${word.text}`;
+        return newRegions;
+      }
+      return regions.concat(word);
+    }, []);
+};
+
+const evaluateNumberRegion = text => {
+  const textIsOnlyHelperWord = ['a', 'and'].reduce((acc, word) => acc || text === word, false);
+  if (textIsOnlyHelperWord) return text;
+  var m = grammar.match(text.replace(PUNCTUATION, ' ').replace(/\band\b/g, ''));
+  if (m.succeeded()) {
+    return semantics(m).eval();
+  }
+  else {
+    console.log(m.message);
+    return text;
+  }
+};
+
+function splice (str, index, count, add) {
+  let i = index;
+  if (i < 0) {
+    i = str.length + i;
+    if (i < 0) {
+      i = 0;
+    }
+  }
+  return str.slice(0, i) + (add || '') + str.slice(i + count);
+}
+
+// replace all number words in a string with actual numerals.
+// If string contains multiple separate numbers then replace each one individually.
+// If option `fuzzy` = true then try coerce words into numbers before conversion to numbers.
 export function wordsToNumbers (text, options) {
   const opts = Object.assign({fuzzy: false}, options);
-  let words = text.toString().split(/[\s-]+/);
-  if (opts.fuzzy) words = words.map(word => fuzzyMatch(word));
-  const regions = extractNumberRegions(words);
-
-  if (regions === 'whole') return convertWordsToNumber(words);
-  if (!regions.length) return null;
-
-  let removedWordsCount = 0;
-  return regions.map(region =>
-    convertWordsToNumber(words.slice(region.start, region.end + 1))
-  )
-  .reduce((acc, replacedRegion, i) => {
-    const removeCount = regions[i].end - regions[i].start + 1;
-    const result = acc.slice(0);
-    result.splice(regions[i].start - removedWordsCount, removeCount, replacedRegion);
-    removedWordsCount += removeCount - 1;
-    return result;
-  }, words)
-  .join(' ');
+  const regions = findRegions(text, opts.fuzzy);
+  if (!regions.length) return text;
+  if (regions.length === 1 && regions[0].start === 0 && regions[0].end === regions[0].text.length) {
+    return evaluateNumberRegion(regions[0].text);
+  }
+  return regions
+    .map(region => evaluateNumberRegion(region.text))
+    .reverse()
+    .reduce((acc, number, index) => {
+      const region = regions[regions.length - index - 1];
+      return splice(
+        acc,
+        region.start,
+        region.end - region.start,
+        `${number}`
+      );
+    }, text);
 }
 
 export default wordsToNumbers;

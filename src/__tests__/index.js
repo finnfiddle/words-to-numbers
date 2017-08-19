@@ -27,6 +27,10 @@ it('a thousand one hundred and eleven', () => {
   expect(wtn('a thousand one hundred and eleven')).to.equal(1111);
 });
 
+it('sixty nine', () => {
+  expect(wtn('sixty nine')).to.equal(69);
+});
+
 it('twenty thousand five hundred and sixty nine', () => {
   expect(wtn('twenty thousand five hundred and sixty nine')).to.equal(20569);
 });
@@ -161,4 +165,44 @@ it('one hundred and tenth', () => {
 
 it('one hundred and ninety ninth', () => {
   expect(wtn('one hundred and ninety ninth')).to.equal(199);
+});
+
+it('digit one', () => {
+  expect(wtn('digit one')).to.equal('digit 1');
+});
+
+it('digit one ', () => {
+  expect(wtn('digit one ')).to.equal('digit 1 ');
+});
+
+it('one thirty', () => {
+  expect(wtn('one thirty')).to.equal('1 30');
+});
+
+it('thousand', () => {
+  expect(wtn('thousand')).to.equal(1000);
+});
+
+it('million', () => {
+  expect(wtn('million')).to.equal(1000000);
+});
+
+it('billion', () => {
+  expect(wtn('billion')).to.equal(1000000000);
+});
+
+it('xxxxxxx one hundred', () => {
+  expect(wtn('xxxxxxx one hundred')).to.equal('xxxxxxx 100');
+});
+
+it('and', () => {
+  expect(wtn('and')).to.equal('and');
+});
+
+it('a', () => {
+  expect(wtn('a')).to.equal('a');
+});
+
+it('junkvalue', () => {
+  expect(wtn('junkvalue')).to.equal('junkvalue');
 });
