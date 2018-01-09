@@ -86,11 +86,15 @@ const MAGNITUDE = {
   decillion: 1000000000000000000000000000000000,
 };
 
+const UNIT_KEYS = Object.keys(UNIT);
+const TEN_KEYS = Object.keys(TEN);
+const MAGNITUDE_KEYS = Object.keys(MAGNITUDE);
+
 // all words found in number phrases
 const NUMBER_WORDS = ['and', 'point', 'dot']
-  .concat(Object.keys(UNIT))
-  .concat(Object.keys(TEN))
-  .concat(Object.keys(MAGNITUDE));
+  .concat(UNIT_KEYS)
+  .concat(TEN_KEYS)
+  .concat(MAGNITUDE_KEYS);
 
 const PUNCTUATION = /[.,\/#!$%\^&\*;:{}=\-_`~()]/g;
 
@@ -105,9 +109,9 @@ const grammar = ohm.grammar(`
     TenUnitAndMagnitude = ten unit magnitude
     Unit = ~ten unit ~magnitude
     Magnitude = ~ten ~unit magnitude
-    ten = ${Object.keys(TEN).map(key => `"${key}" | `).join('').slice(0, -2)}
-    unit = ${Object.keys(UNIT).map(key => `"${key}" | `).join('').slice(0, -2)}
-    magnitude = ${Object.keys(MAGNITUDE).map(key => `"${key}" | `).join('').slice(0, -2)}
+    ten = ${TEN_KEYS.map(key => `"${key}" | `).join('').slice(0, -2)}
+    unit = ${UNIT_KEYS.map(key => `"${key}" | `).join('').slice(0, -2)}
+    magnitude = ${MAGNITUDE_KEYS.map(key => `"${key}" | `).join('').slice(0, -2)}
   }
 `);
 
@@ -148,9 +152,9 @@ const fuzzyMatch = word => {
     .word;
 };
 
-const isUnit = word => Object.keys(UNIT).indexOf(word) !== -1;
-const isTen = word => Object.keys(TEN).indexOf(word) !== -1;
-const isMag = word => Object.keys(MAGNITUDE).indexOf(word) !== -1;
+const isUnit = word => UNIT_KEYS.indexOf(word) !== -1;
+const isTen = word => TEN_KEYS.indexOf(word) !== -1;
+const isMag = word => MAGNITUDE_KEYS.indexOf(word) !== -1;
 
 const findRegions = (text, fuzzy) => {
   const words = text
