@@ -43,6 +43,6 @@
     "babel-runtime": "6.x.x",
     "clj-fuzzy": "^0.3.2",
     "its-set": "^1.1.5",
-    "ohm-js": "^0.13.1"
+    "ohm-js": "^0.14.0"
   }
 }
