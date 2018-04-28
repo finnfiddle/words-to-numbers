@@ -214,3 +214,19 @@ it('eleven dot one', () => {
 it('Fifty People, One Question: Brooklyn', () => {
   expect(wtn('Fifty People, One Question: Brooklyn')).to.eq('50 People, 1 Question: Brooklyn');
 });
+
+it('Model Fifty-One Fifty-Six', () => {
+  expect(wtn('Model Fifty-One Fifty-Six')).to.eq('Model 51 56');
+});
+
+it('Fifty Million Frenchmen', () => {
+  expect(wtn('Fifty Million Frenchmen')).to.eq('50000000 Frenchmen');
+});
+
+it('A Thousand and One Wives', () => {
+  expect(wtn('A Thousand and One Wives')).to.eq('1001 Wives');
+});
+
+it('Ten Thousand Pictures of You', () => {
+  expect(wtn('Ten Thousand Pictures of You')).to.eq('10000 Pictures of You');
+});
