@@ -77,15 +77,16 @@ export const MAGNITUDE = {
   decillion: 1000000000000000000000000000000000,
 };
 
+export const NUMBER = { ...UNIT, ...TEN, ...MAGNITUDE };
+
 export const UNIT_KEYS = Object.keys(UNIT);
 export const TEN_KEYS = Object.keys(TEN);
 export const MAGNITUDE_KEYS = Object.keys(MAGNITUDE);
 
-// all words found in number phrases
-export const NUMBER_WORDS = ['and', 'point', 'dot']
-  .concat(UNIT_KEYS)
-  .concat(TEN_KEYS)
-  .concat(MAGNITUDE_KEYS);
+export const NUMBER_WORDS = [ ...UNIT_KEYS, ...TEN_KEYS, ...MAGNITUDE_KEYS];
+
+export const JOINERS = ['and'];
+export const DECIMALS = ['point', 'dot'];
 
 export const PUNCTUATION = [
   '.',
@@ -110,4 +111,16 @@ export const PUNCTUATION = [
   '~',
   '(',
   ')',
+  ' ',
 ];
+
+export const TOKEN_TYPE = {
+  UNIT: 0,
+  TEN: 1,
+  MAGNITUDE: 2,
+  DECIMAL: 5,
+};
+
+export const ALL_WORDS = [ ...NUMBER_WORDS, ...JOINERS, ...DECIMALS ];
+
+export const BLACKLIST_SINGULAR_WORDS = ['a'];
