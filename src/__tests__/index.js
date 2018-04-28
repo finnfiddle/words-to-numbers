@@ -210,3 +210,7 @@ it('junkvalue', () => {
 it('eleven dot one', () => {
   expect(wtn('eleven dot one')).to.eq(11.1);
 });
+
+it('Fifty People, One Question: Brooklyn', () => {
+  expect(wtn('Fifty People, One Question: Brooklyn')).to.eq('50 People, 1 Question: Brooklyn');
+});

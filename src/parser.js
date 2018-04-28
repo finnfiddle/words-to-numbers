@@ -84,13 +84,13 @@ const canAddTokenToEndOfRegion = (region, token) => {
 };
 
 const checkIfTokenFitsRegion = (region, token) => {
-  const isPunctuation = PUNCTUATION.includes(token.value);
+  const isPunctuation = PUNCTUATION.includes(token.lowerCaseValue);
   if (isPunctuation) return SKIP;
-  const isJoiner = JOINERS.includes(token.value);
+  const isJoiner = JOINERS.includes(token.lowerCaseValue);
   if (isJoiner) return SKIP;
-  const isDecimal = DECIMALS.includes(token.value);
+  const isDecimal = DECIMALS.includes(token.lowerCaseValue);
   if (isDecimal) return ADD;
-  const isNumberWord = NUMBER_WORDS.includes(token.value);
+  const isNumberWord = NUMBER_WORDS.includes(token.lowerCaseValue);
   if (isNumberWord) {
     if (!region) return START_NEW_REGION;
     if (canAddTokenToEndOfRegion(region, token)) {
@@ -103,20 +103,20 @@ const checkIfTokenFitsRegion = (region, token) => {
 
 const regionIsValid = region => {
   if (region.tokens.length === 1) {
-    if (['a'].includes(region.tokens[0].value)) return false;
+    if (['a'].includes(region.tokens[0].lowerCaseValue)) return false;
   }
   return true;
 };
 
 const getDecimalTokenIndex = (tokens) => tokens.reduce((acc, token, i) =>
-  DECIMALS.includes(token.value) ? i : acc
+  DECIMALS.includes(token.lowerCaseValue) ? i : acc
 , -1);
 
 const getDecimalSubRegion = (tokens) => ({
   start: tokens[0].start,
   end: tokens[tokens.length - 1].end,
   tokens: tokens.reduce((acc, token) =>
-    NUMBER_WORDS.concat(DECIMALS).includes(token.value) ?
+    NUMBER_WORDS.concat(DECIMALS).includes(token.lowerCaseValue) ?
       acc.concat(token) :
       acc
   , []),
@@ -125,7 +125,7 @@ const getDecimalSubRegion = (tokens) => ({
 
 const checkBlacklist = tokens =>
   tokens.length === 1 &&
-  BLACKLIST_SINGULAR_WORDS.includes(tokens[0].value);
+  BLACKLIST_SINGULAR_WORDS.includes(tokens[0].lowerCaseValue);
 
 const matchRegions = (tokens) => {
   const regions = [];
@@ -194,7 +194,7 @@ const getTokenType = (chunk) => {
 
 export default (text, options) => {
   const tokens = text
-    .split(/(\w+|\s|[[:punct:]])/)
+    .split(/(\w+|\s|[[:punct:]])/i)
     .reduce((acc, chunk) => {
       const unfuzzyChunk = chunk.length && options.fuzzy && !PUNCTUATION.includes(chunk) ?
         fuzzyMatch(chunk) :
@@ -202,13 +202,14 @@ export default (text, options) => {
       const start = acc.length ? acc[acc.length - 1].end + 1 : 0;
       const end = start + chunk.length;
       return end !== start ?
-        acc.concat({
-          start,
-          end: end - 1,
-          value: unfuzzyChunk,
-          type: getTokenType(unfuzzyChunk, options),
-        }) :
-        acc;
+      acc.concat({
+        start,
+        end: end - 1,
+        value: unfuzzyChunk,
+        lowerCaseValue: unfuzzyChunk.toLowerCase(),
+        type: getTokenType(unfuzzyChunk, options),
+      }) :
+      acc;
     }, []);
   const regions = matchRegions(tokens, options);
   return regions;

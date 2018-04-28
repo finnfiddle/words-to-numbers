@@ -9,21 +9,21 @@ const getNumber = region => {
       case TOKEN_TYPE.MAGNITUDE: {
         subRegionSum = 1;
         tokens.forEach(token => {
-          subRegionSum *= NUMBER[token.value];
+          subRegionSum *= NUMBER[token.lowerCaseValue];
         });
         break;
       }
       case TOKEN_TYPE.UNIT:
       case TOKEN_TYPE.TEN: {
         tokens.forEach(token => {
-          subRegionSum += NUMBER[token.value];
+          subRegionSum += NUMBER[token.lowerCaseValue];
         });
         break;
       }
       case TOKEN_TYPE.DECIMAL: {
         tokens.forEach((token, i) => {
-          if (!DECIMALS.includes(token.value)) {
-            subRegionSum += NUMBER[token.value] / Math.pow(10, i);
+          if (!DECIMALS.includes(token.lowerCaseValue)) {
+            subRegionSum += NUMBER[token.lowerCaseValue] / Math.pow(10, i);
           }
         });
         break;
