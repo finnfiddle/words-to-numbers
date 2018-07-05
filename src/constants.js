@@ -118,7 +118,8 @@ export const TOKEN_TYPE = {
   UNIT: 0,
   TEN: 1,
   MAGNITUDE: 2,
-  DECIMAL: 5,
+  DECIMAL: 3,
+  HUNDRED: 4,
 };
 
 export const ALL_WORDS = [ ...NUMBER_WORDS, ...JOINERS, ...DECIMALS ];

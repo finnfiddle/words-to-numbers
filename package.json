@@ -1,7 +1,7 @@
 {
   "name": "words-to-numbers",
   "description": "convert textual words to numbers with optional fuzzy text matching",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "license": "MIT",
   "options": {
     "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js"
@@ -30,7 +30,7 @@
     "mocha": "2.x.x",
     "nodemon": "1.7.x"
   },
-  "author": "Finn Fitzsimons <>",
+  "author": "Finn Fitzsimons <hello@finn.works>",
   "bugs": {
     "url": "https://github.com/finnfiddle/words-to-numbers/issues"
   },

@@ -7,6 +7,10 @@ it('one hundred', () => {
   expect(wtn('one hundred')).to.equal(100);
 });
 
+it('one hundred two', () => {
+  expect(wtn('one hundred two')).to.equal(102);
+});
+
 it('one hundred and five', () => {
   expect(wtn('one hundred and five')).to.equal(105);
 });
@@ -230,3 +234,89 @@ it('A Thousand and One Wives', () => {
 it('Ten Thousand Pictures of You', () => {
   expect(wtn('Ten Thousand Pictures of You')).to.eq('10000 Pictures of You');
 });
+
+it('nineteen eighty four', () => {
+  expect(wtn('nineteen eighty four', { impliedHundreds: true })).to.eq(1984);
+});
+
+it('one thirty', () => {
+  expect(wtn('one thirty', { impliedHundreds: true })).to.eq(130);
+});
+
+it('six sixty two', () => {
+  expect(wtn('six sixty two', { impliedHundreds: true })).to.eq(662);
+});
+
+it('ten twelve', () => {
+  expect(wtn('ten twelve', { impliedHundreds: true })).to.eq(1012);
+});
+
+it('nineteen ten', () => {
+  expect(wtn('nineteen ten', { impliedHundreds: true })).to.eq(1910);
+});
+
+it('twenty ten', () => {
+  expect(wtn('twenty ten', { impliedHundreds: true })).to.eq(2010);
+});
+
+it('twenty seventeen', () => {
+  expect(wtn('twenty seventeen', { impliedHundreds: true })).to.eq(2017);
+});
+
+it('twenty twenty', () => {
+  expect(wtn('twenty twenty', { impliedHundreds: true })).to.eq(2020);
+});
+
+it('twenty twenty one', () => {
+  expect(wtn('twenty twenty one', { impliedHundreds: true })).to.eq(2021);
+});
+
+it('fifty sixty three', () => {
+  expect(wtn('fifty sixty three', { impliedHundreds: true })).to.eq(5063);
+});
+
+it('fifty sixty', () => {
+  expect(wtn('fifty sixty', { impliedHundreds: true })).to.eq(5060);
+});
+
+it('three thousand', () => {
+  expect(wtn('three thousand', { impliedHundreds: true })).to.eq(3000);
+});
+
+it('fifty sixty three thousand', () => {
+  expect(wtn('fifty sixty three thousand', { impliedHundreds: true })).to.eq(5063000);
+});
+
+it('one hundred thousand', () => {
+  expect(wtn('one hundred thousand')).to.eq(100000);
+});
+
+it('I have zero apples and four oranges', () => {
+  expect(wtn('I have zero apples and four oranges')).to.eq('I have 0 apples and 4 oranges');
+});
+
+it('Dot two Dot', () => {
+  expect(wtn('Dot two Dot')).to.eq('0.2 Dot');
+});
+
+it('seventeen dot two four dot twelve dot five', () => {
+  expect(wtn('seventeen dot two four dot twelve dot five')).to.eq('17.24 dot 12.5');
+});
+
+// these dont work below fml
+
+// it('one thirty thousand', () => {
+//   expect(wtn('one thirty thousand', { impliedHundreds: true })).to.eq(130000);
+// });
+
+// it('nineteen eighty thousand', () => {
+//   expect(wtn('nineteen eighty thousand', { impliedHundreds: true })).to.eq('19 80000');
+// });
+
+// it('one hundred two thousand', () => {
+//   expect(wtn('one hundred two thousand')).to.eq(102000);
+// });
+
+// it('one hundred and two thousand', () => {
+//   expect(wtn('one hundred and two thousand')).to.eq(102000);
+// });
