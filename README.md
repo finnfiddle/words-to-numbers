@@ -85,3 +85,21 @@ wordsToNumbers('one hundred and ninety ninth'); //199
 const { wordsToNumbers } = require('words-to-numbers');
 wordsToNumbers('one hundred'); //100;
 ```
+
+## Implied Hundreds
+
+```javascript
+wordsToNumbers('nineteen eighty four', { impliedHundreds: true }); //1984
+wordsToNumbers('one thirty', { impliedHundreds: true }); //130
+wordsToNumbers('six sixty two', { impliedHundreds: true }); //662
+wordsToNumbers('ten twelve', { impliedHundreds: true }); //1012
+wordsToNumbers('nineteen ten', { impliedHundreds: true }); //1910
+wordsToNumbers('twenty ten', { impliedHundreds: true }); //2010
+wordsToNumbers('twenty seventeen', { impliedHundreds: true }); //2017
+wordsToNumbers('twenty twenty', { impliedHundreds: true }); //2020
+wordsToNumbers('twenty twenty one', { impliedHundreds: true }); //2021
+wordsToNumbers('fifty sixty three', { impliedHundreds: true }); //5063
+wordsToNumbers('fifty sixty', { impliedHundreds: true }); //5060
+wordsToNumbers('fifty sixty three thousand', { impliedHundreds: true }); //5063000
+wordsToNumbers('one hundred thousand', { impliedHundreds: true }); //100000
+```
