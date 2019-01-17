@@ -114,6 +114,13 @@ export const PUNCTUATION = [
   ' ',
 ];
 
+export const ORDINAL_SUFFIXES = [
+  'st',
+  'nd',
+  'rd',
+  'th'
+];
+
 export const TOKEN_TYPE = {
   UNIT: 0,
   TEN: 1,
