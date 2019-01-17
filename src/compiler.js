@@ -1,7 +1,7 @@
 import { splice } from './util';
-import { TOKEN_TYPE, NUMBER } from './constants';
+import { TOKEN_TYPE, NUMBER, ORDINAL_SUFFIXES } from './constants';
 
-const getNumber = region => {
+const getNumber = (region, options) => {
   let sum = 0;
   let decimalReached = false;
   let decimalUnits = [];
@@ -67,23 +67,33 @@ const getNumber = region => {
     });
   });
 
+  if (options.preserveOrdinals) {
+    sum += getOrdinalSuffix(region);
+  }
+
   return sum;
 };
 
-const replaceRegionsInText = (regions, text) => {
+const getOrdinalSuffix = region => {
+  const token = region.tokens[region.tokens.length - 1].lowerCaseValue;
+  const suffix = token.substring(token.length - 2);
+  return ORDINAL_SUFFIXES.includes(suffix) ? suffix : '';
+};
+
+const replaceRegionsInText = (regions, text, options) => {
   let replaced = text;
   let offset = 0;
   regions.forEach(region => {
     const length = region.end - region.start + 1;
-    const replaceWith = `${getNumber(region)}`;
+    const replaceWith = `${getNumber(region, options)}`;
     replaced = splice(replaced, region.start + offset, length, replaceWith);
     offset -= length - replaceWith.length;
   });
   return replaced;
 };
 
-export default ({ regions, text }) => {
+export default ({ regions, text, options }) => {
   if (!regions) return text;
-  if (regions[0].end - regions[0].start === text.length - 1) return getNumber(regions[0]);
-  return replaceRegionsInText(regions, text);
+  if (regions[0].end - regions[0].start === text.length - 1) return getNumber(regions[0], options);
+  return replaceRegionsInText(regions, text, options);
 };

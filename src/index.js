@@ -4,7 +4,7 @@ import compiler from './compiler';
 export function wordsToNumbers (text, options = {}) {
   const regions = parser(text, options);
   if (!regions.length) return text;
-  const compiled = compiler({ text, regions });
+  const compiled = compiler({ text, regions, options });
   return compiled;
 }
 

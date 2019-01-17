@@ -303,6 +303,22 @@ it('seventeen dot two four dot twelve dot five', () => {
   expect(wtn('seventeen dot two four dot twelve dot five')).to.eq('17.24 dot 12.5');
 });
 
+it('second', () => {
+  expect(wtn('second', { preserveOrdinals: true })).to.eq('2nd');
+});
+
+it('one hundred thirty third', () => {
+  expect(wtn('one hundred thirty third', { preserveOrdinals: true })).to.eq('133rd');
+});
+
+it('the eleventh hour', () => {
+  expect(wtn('the eleventh hour', { preserveOrdinals: true })).to.eq('the 11th hour');
+});
+
+it('first four', () => {
+  expect(wtn('first four', { preserveOrdinals: true })).to.eq('1st 4');
+});
+
 // these dont work below fml
 
 // it('one thirty thousand', () => {
