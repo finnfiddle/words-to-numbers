@@ -28,7 +28,8 @@
     "eslint-plugin-babel": "2.x.x",
     "its-set": "^1.1.5",
     "mocha": "2.x.x",
-    "nodemon": "1.7.x"
+    "nodemon": "1.7.x",
+    "talisman": "^1.1.4"
   },
   "author": "Finn Fitzsimons <hello@finn.works>",
   "bugs": {
@@ -41,7 +42,6 @@
   },
   "dependencies": {
     "babel-runtime": "6.x.x",
-    "clj-fuzzy": "^0.3.2",
     "its-set": "^1.1.5"
   }
 }
