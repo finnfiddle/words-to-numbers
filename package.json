@@ -1,5 +1,5 @@
 {
-  "name": "words-to-numbers",
+  "name": "@0x80/words-to-numbers",
   "description": "convert textual words to numbers with optional fuzzy text matching",
   "version": "1.6.0-0",
   "license": "MIT",
@@ -43,7 +43,7 @@
   "homepage": "https://github.com/finnfiddle/words-to-numbers",
   "repository": {
     "type": "git",
-    "url": "https://github.com/finnfiddle/words-to-numbers.git"
+    "url": "https://github.com/0x80/words-to-numbers.git"
   },
   "dependencies": {
     "babel-runtime": "6.x.x",
