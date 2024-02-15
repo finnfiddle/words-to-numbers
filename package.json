@@ -1,11 +1,17 @@
 {
   "name": "words-to-numbers",
   "description": "convert textual words to numbers with optional fuzzy text matching",
-  "version": "1.5.1",
+  "version": "1.6.0-0",
   "license": "MIT",
   "options": {
     "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js"
   },
+  "main": "dist/index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
   "scripts": {
     "start": "babel --watch --plugins \"transform-runtime\" src --ignore __tests__ --out-dir ./dist",
     "prepublish": "babel --plugins \"transform-runtime\" src --ignore __tests__ --out-dir ./dist",
