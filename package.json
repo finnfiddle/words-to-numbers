@@ -1,5 +1,6 @@
 {
   "name": "@0x80/words-to-numbers",
+  "private": false,
   "description": "convert textual words to numbers with optional fuzzy text matching",
   "version": "1.6.0-0",
   "license": "MIT",
