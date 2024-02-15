@@ -38,10 +38,6 @@
     "nodemon": "1.7.x"
   },
   "author": "Finn Fitzsimons <hello@finn.works>",
-  "bugs": {
-    "url": "https://github.com/finnfiddle/words-to-numbers/issues"
-  },
-  "homepage": "https://github.com/finnfiddle/words-to-numbers",
   "repository": {
     "type": "git",
     "url": "https://github.com/0x80/words-to-numbers.git"
